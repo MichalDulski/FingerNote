@@ -26,7 +26,7 @@ namespace FingerNote
         {
             InitializeComponent();
 
-            MainPage = new NotePage();
+            MainPage = new NavigationPage(new LoginPage());
         }
 
         protected override void OnStart()
