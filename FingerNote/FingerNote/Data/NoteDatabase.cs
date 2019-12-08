@@ -11,11 +11,12 @@ namespace FingerNote.Data
     {
         readonly SQLiteAsyncConnection _database;
 
-        public NoteDatabase(string dbPath)
+        public NoteDatabase(string dbPath, string key)
         {
-            var options = new SQLiteConnectionString(dbPath, true);
+            var options = new SQLiteConnectionString(dbPath, true, key: key);
             _database = new SQLiteAsyncConnection(options);
             _database.CreateTableAsync<Note>().Wait();
+            _database.InsertAsync(new Note());
         }
 
         public Task<Note> GetNoteAsync()
@@ -27,9 +28,6 @@ namespace FingerNote.Data
         
         public Task<int> SaveNoteAsync(Note note)
         {
-            var xd = _database.Table<Note>().CountAsync();
-            if (xd.Result == 0)
-                return _database.InsertAsync(note);
             return _database.UpdateAsync(note);
         }
     }

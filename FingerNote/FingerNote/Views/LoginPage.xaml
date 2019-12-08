@@ -7,7 +7,15 @@
              x:Class="FingerNote.Views.LoginPage">
     <ContentPage.Content>
         <StackLayout>
-            <Button Text="Login" Clicked="OnLoginButtonClicked"/>
+            <StackLayout Orientation="Horizontal">
+                <StackLayout.IsVisible>
+                    <OnPlatform x:TypeArguments="x:Boolean"
+                      iOS="True"
+                      Android="True"
+                      WinPhone="False" />
+                </StackLayout.IsVisible>
+            </StackLayout>
+            <Button x:Name="FingerprintButton" Text="Scan Fingerprint" Clicked="Button_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
