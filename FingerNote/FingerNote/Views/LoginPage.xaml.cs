@@ -1,4 +1,5 @@
-﻿using Plugin.Fingerprint;
+﻿using FingerNote.ViewModels;
+using Plugin.Fingerprint;
 using Plugin.Fingerprint.Abstractions;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace FingerNote.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        public LoginPage()
+        public LoginPage() : base()
         {
             InitializeComponent();
         }

@@ -1,11 +1,10 @@
-﻿using FingerNote.Crypto;
-using FingerNote.Data;
+﻿using FingerNote.Data;
+using FingerNote.Interfaces;
 using FingerNote.Views;
 using System;
 using System.IO;
 using System.Security.Cryptography;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace FingerNote
 {
@@ -21,14 +20,15 @@ namespace FingerNote
             {
                 if (noteDatabase == null)
                 {
-                    var key = Key.GetNotesKey().Result;
-                    if(key == null)
-                    {
-                        byte[] data = new byte[1024];
-                        rngCsp.GetBytes(data);
-                        key = BitConverter.ToString(data, 0);
-                        Key.SetNotesKey(key);
-                    }
+                    var key = DependencyService.Get<IGetKeyService>().GetKey();
+                    //if(key == null)
+                    //{
+                    //    //byte[] data = new byte[1024];
+                    //    //rngCsp.GetBytes(data);
+                    //    //key = BitConverter.ToString(data, 0);
+                    //    //Key.SetNotesKey(key);
+                    //    key = DependencyService.Get<IGetKeyService>().GetKey();
+                    //}
                     noteDatabase = new NoteDatabase(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "Notes.db3"), key);
                 }
                 return noteDatabase;
