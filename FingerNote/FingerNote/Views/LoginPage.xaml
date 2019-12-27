@@ -10,11 +10,16 @@
             <StackLayout Orientation="Horizontal">
                 <StackLayout.IsVisible>
                     <OnPlatform x:TypeArguments="x:Boolean"
-                      iOS="True"
+                      iOS="False"
                       Android="True"
                       WinPhone="False" />
                 </StackLayout.IsVisible>
             </StackLayout>
+            <Label>Login using password</Label>
+            <Entry x:Name="PasswordEntry" Placeholder="Password" IsPassword="True"/>
+            <Button x:Name="LoginButton" Text="Login" Clicked="LoginButton_Clicked"/>
+            <Button x:Name="CreateButton" Text="Create" Clicked="CreateButton_Clicked"/>
+            <Label HorizontalOptions="Center" Text="Or"/>
             <Button x:Name="FingerprintButton" Text="Scan Fingerprint" Clicked="Button_Clicked"/>
         </StackLayout>
     </ContentPage.Content>

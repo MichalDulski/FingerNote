@@ -5,6 +5,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="FingerNote.Views.NotePage">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="SettingsButton" Text="Settings" Clicked="SettingsButton_Clicked"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <StackLayout>
             <Editor Text="{Binding Content}"
