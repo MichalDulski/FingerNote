@@ -7,10 +7,11 @@
              x:Class="FingerNote.Views.SettingsPage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Previous password"
+            <Label x:Name="prevPassword"
+				Text="Previous password"
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />
-            <Entry x:Name="PrevPassword" IsPassword="True" Placeholder="Previous password"/>
+            <Entry x:Name="PrevPassword" IsPassword="True" Placeholder="Previous password" Text=""/>
             <Label Text="New password"
                 VerticalOptions="Center"
                 HorizontalOptions="Center" />

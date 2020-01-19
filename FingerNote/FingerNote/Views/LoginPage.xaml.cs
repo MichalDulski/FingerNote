@@ -29,8 +29,10 @@ namespace FingerNote.Views
             InitializeComponent();
             try
             {
-                if (SecureStorage.GetAsync(key).IsCompleted)
+                if (SecureStorage.GetAsync(key).Result != null || SecureStorage.GetAsync(App.FingerPass).Result != null)
                     CreateButton.IsVisible = false;
+                else
+                    CreateButton.IsVisible = true;
             }
             catch {}
             BindingContext = new LoginViewModel();
@@ -40,16 +42,48 @@ namespace FingerNote.Views
         {
             if (result.Authenticated)
             {
-                await Navigation.PushAsync(new NotePage()).ConfigureAwait(true);
-                //await DisplayAlert("FingerPrint Sample", "Success", "Ok");
+                if(SecureStorage.GetAsync(App.FingerPass).Result == null)
+                {
+                    if(SecureStorage.GetAsync(App.PasswordPass).Result == null)
+                    {
+                        App.LoginMethod = Enums.LoginMethodEnum.Fingerprint;
+                        await Navigation.PushAsync(new NotePage()).ConfigureAwait(true);
+                    }
+                    else
+                    {
+                        var hash = Crypto.ComputeSHA512Hash(PasswordEntry.Text);
+                        try
+                        {
+                            string savedHash = await SecureStorage.GetAsync(key).ConfigureAwait(true);
+                            if (savedHash == hash)
+                            {
+                                App.PassText = PasswordEntry.Text;
+                                PasswordEntry.Text = "";
+                                App.LoginMethod = Enums.LoginMethodEnum.Fingerprint;
+                                await Navigation.PushAsync(new NotePage()).ConfigureAwait(true);
+                            }
+                            else
+                            {
+                                PasswordEntry.Text = "";
+                                await DisplayAlert("Error", "Please provide correct password", "Ok");
+                            }
+                        }
+                        catch (Exception ex) { }
+                    }
+                }
+                else
+                {
+                    App.LoginMethod = Enums.LoginMethodEnum.Fingerprint;
+                    await Navigation.PushAsync(new NotePage()).ConfigureAwait(true);
+                }
             }
             else
             {
-                await DisplayAlert("FingerPrint Sample", result.ErrorMessage, "Ok");
+                await DisplayAlert("Finger not found :(", result.ErrorMessage, "Ok");
             }
         }
 
-        private async void Button_Clicked(object sender, EventArgs e)
+        private async void FingerprintButton_Clicked(object sender, EventArgs e)
         {
             var result = await CrossFingerprint.Current.IsAvailableAsync(true);
             if (result)
@@ -67,6 +101,9 @@ namespace FingerNote.Views
                 string savedHash = await SecureStorage.GetAsync(key).ConfigureAwait(true);
                 if (savedHash == hash)
                 {
+                    App.PassText = PasswordEntry.Text;
+                    App.LoginMethod = Enums.LoginMethodEnum.Password;
+                    PasswordEntry.Text = "";
                     await Navigation.PushAsync(new NotePage()).ConfigureAwait(true);
                 }
                 else
