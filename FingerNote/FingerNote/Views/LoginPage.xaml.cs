@@ -47,6 +47,7 @@ namespace FingerNote.Views
                     if(SecureStorage.GetAsync(App.PasswordPass).Result == null)
                     {
                         App.LoginMethod = Enums.LoginMethodEnum.Fingerprint;
+                        CreateButton.IsVisible = false;
                         await Navigation.PushAsync(new NotePage()).ConfigureAwait(true);
                     }
                     else
